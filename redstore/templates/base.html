@@ -22,18 +22,17 @@
                 </div>
                 <nav>
                     <ul id="MenuItems">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="products.html">Products</a></li>
+                        <li><a href="{% url 'home_page' %}">Home</a></li>
+                        <li><a href="{% url 'product_list' %}">Products</a></li>
                         <li><a href="">About</a></li>
                         <li><a href="">Contact</a></li>
-                        <li><a href="account.html">Account</a></li>
+                        <li><a href="{% url 'register' %}">Account</a></li>
                     </ul>
                 </nav>
                 <a href="cart.html"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
                 <img src="{% static 'images/menu.png' %}" class="menu-icon" onclick="menutoggle()">
             </div>
-            
-        </div>
+        </div> 
     </div>
 
     {% block content %}

@@ -20,6 +20,7 @@ def register(request):
             print(error_message)
         else:
             user = User.objects.create_user(username=username, password=password, email=email)
+            auth_login(request,user)
             return redirect('home_page')
                   
     return render(request, 'account.html', {'error_message':error_message})
@@ -44,4 +45,4 @@ def logout(request):
 
 @login_required(login_url='/login')
 def home_page(request):
-    return HttpResponse('Welcome Your Autherizated Now.')
+    return render(request, 'home.html')
