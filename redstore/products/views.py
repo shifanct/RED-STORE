@@ -1,9 +1,12 @@
 from django.shortcuts import render
+from . models import Category, Products
 
 # Create your views here.
 
 def product_list(request):
-    return render(request, 'products.html')
+    all_products = Products.objects.all()
+    return render(request, 'products.html', {'products':all_products})
 
-def product_detailed_view(request):
-    pass
+def product_detailed_view(request, pk):
+    instance = Products.objects.get(pk = pk)
+    print(instance)    
