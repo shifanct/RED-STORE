@@ -9,4 +9,4 @@ def product_list(request):
 
 def product_detailed_view(request, pk):
     instance = Products.objects.get(pk = pk)
-    print(instance)    
+    return render(request, 'product_detailed.html', {'product':instance})
