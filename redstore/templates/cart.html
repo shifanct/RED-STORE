@@ -11,13 +11,14 @@
                 <th>Quantity</th>
                 <th>Subtotal</th>
             </tr>
+            {% for instance in cart_items %}
             <tr>
                 <td>
                     <div class="cart-info">
-                        <img src="{% static 'images/buy-1.jpg' %}">
+                        <img src="{{ instance.product.image.url }}">
                         <div>
-                            <p>Red Printed T-Shirt</p>
-                            <small>Price: $50.00</small>
+                            <p>{{ instance.product.product }}</p>
+                            <small>Price: ${{ instance.product.price }}</small>
                             <br>
                             <a href="">Remove</a>
                         </div>
@@ -26,36 +27,8 @@
                 <td><input type="number" value="1"></td>
                 <td>$50.00</td>
             </tr>
-            <tr>
-                <td>
-                    <div class="cart-info">
-                        <img src="{% static 'images/buy-2.jpg' %}">
-                        <div>
-                            <p>Red Printed T-Shirt</p>
-                            <small>Price: $50.00</small>
-                            <br>
-                            <a href="">Remove</a>
-                        </div>
-                    </div>
-                </td>
-                <td><input type="number" value="1"></td>
-                <td>$50.00</td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="cart-info">
-                        <img src="{% static 'images/buy-3.jpg' %}">
-                        <div>
-                            <p>Red Printed T-Shirt</p>
-                            <small>Price: $50.00</small>
-                            <br>
-                            <a href="">Remove</a>
-                        </div>
-                    </div>
-                </td>
-                <td><input type="number" value="1"></td>
-                <td>$50.00</td>
-            </tr>
+            {% endfor %}
+            
         </table>
         <div class="total-price">
             <table>
