@@ -21,5 +21,14 @@ class Products(models.Model):
 
     def __str__(self):
         return self.product
+    
+class product_images(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product_images')
+    extra_images = models.ImageField(upload_to='extra_product_images/')
+
+    def __str__(self):
+        return f"{self.product.product}' image"
+
+
 
 # Add an additional model reviews for allow users to add their own experiance with this product.

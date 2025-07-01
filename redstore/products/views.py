@@ -8,5 +8,6 @@ def product_list(request):
     return render(request, 'products.html', {'products':all_products})
 
 def product_detailed_view(request, pk):
-    instance = Products.objects.get(pk = pk)
-    return render(request, 'product_detailed.html', {'product':instance})
+    product = Products.objects.get(pk = pk)
+    extra_images = product.product_images.all()
+    return render(request, 'product_detailed.html', {'product':product, 'extra_images':extra_images})
