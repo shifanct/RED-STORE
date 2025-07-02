@@ -22,4 +22,8 @@ def product_list(request):
 def product_detailed_view(request, pk):
     product = Products.objects.get(pk = pk)
     extra_images = product.product_images.all()
-    return render(request, 'product_detailed.html', {'product':product, 'extra_images':extra_images})
+    category_obj = Category.objects.get(name = product.category.name)
+    related_products = category_obj.category_products.all()
+    print(related_products)
+    return render(request, 'product_detailed.html', {'product':product, 'extra_images':extra_images,
+                                                     'category_obj':category_obj,'related_products':related_products})
