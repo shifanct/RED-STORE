@@ -34,10 +34,9 @@
             {% endfor %}
         </div>
         <div class="page-btn">
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
-            <span>4</span>
+            {% for page in pages %}
+            <a href="?page={{ page }}"><span>{{ page }}</span></a>
+            {% endfor %}
             <span>&#8594;</span>
         </div>
     </div>
