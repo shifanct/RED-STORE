@@ -23,8 +23,11 @@
                             {% csrf_token %}
                             <input type="text" placeholder="Username" name="username">
                             <input type="password" placeholder="Password" name="password">
+                            {% if error_message %}
+                            {{ error_message }}
+                            {% endif %}
                             <button type="submit" class="btn">Login</button>
-                            <a href="">Forget Password</a>
+                            <a href="{% url 'reset_password' %}">Forget Password</a>
                         </form>
 
                         <form id="RegForm" method="post" action="{% url 'register' %}">
@@ -33,6 +36,9 @@
                             <input type="email" placeholder="Email" name="email">
                             <input type="password" placeholder="Password" name="password">
                             <button type="submit" class="btn">Register</button>
+                            {% if register_error_message %}
+                            {{ register_error_message }}
+                            {% endif %}
                         </form>
                     </div>
                 </div>
@@ -56,23 +62,34 @@
     </script>
 
     <!-- Toggle Form -->
-    <script>
-        var LoginForm = document.getElementById("LoginForm");
-        var RegForm = document.getElementById("RegForm");
-        var Indicator = document.getElementById("Indicator");
-        function register() {
-            RegForm.style.transform = "translatex(0px)";
-            LoginForm.style.transform = "translatex(0px)";
-            Indicator.style.transform = "translateX(100px)";
+<script>
+    var LoginForm = document.getElementById("LoginForm");
+    var RegForm = document.getElementById("RegForm");
+    var Indicator = document.getElementById("Indicator");
 
-        }
-        function login() {
-            RegForm.style.transform = "translatex(300px)";
-            LoginForm.style.transform = "translatex(300px)";
-            Indicator.style.transform = "translate(0px)";
+    function register() {
+        RegForm.style.transform = "translatex(0px)";
+        LoginForm.style.transform = "translatex(0px)";
+        Indicator.style.transform = "translateX(100px)";
+    }
 
+    function login() {
+        RegForm.style.transform = "translatex(300px)";
+        LoginForm.style.transform = "translatex(300px)";
+        Indicator.style.transform = "translateX(0px)";
+    }
+
+    // Auto toggle based on URL
+    window.onload = function () {
+        var formType = "{{ form_type }}";
+        if (formType === "register") {
+            register();
+        } else {
+            login();
         }
-    </script>
+    };
+</script>
+
 
 </body>
 

@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from . models import Category, Products
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required(login_url='/login')
 def product_list(request):
     all_products = Products.objects.all()
     paginator = Paginator(all_products, 8)  
@@ -19,6 +20,7 @@ def product_list(request):
 
     return render(request, 'products.html', {'products': page_products, 'pages':dict['pages']})
 
+@login_required(login_url='/login')
 def product_detailed_view(request, pk):
     product = Products.objects.get(pk = pk)
     extra_images = product.product_images.all()

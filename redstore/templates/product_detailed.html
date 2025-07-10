@@ -53,7 +53,7 @@
             {% for products in related_products %}
             {% if products.product != product.product %}
             <div class="col-4">
-                <a href="{% url 'detailed_view' product.id %}"><img src="{{ products.image.url }}"></a>
+                <a href="{% url 'detailed_view' products.id %}"><img src="{{ products.image.url }}"></a>
                 <h4>{{ products.product }}</h4>
                 <div class="rating">
                     <i class="fa fa-star"></i>
@@ -71,23 +71,34 @@
 
 
     <!-- product gallery -->
-    <script>
-        var ProductImg = document.getElementById("ProductImg");
-        var SmallImg = document.getElementsByClassName("small-img");
+<script>
+    var LoginForm = document.getElementById("LoginForm");
+    var RegForm = document.getElementById("RegForm");
+    var Indicator = document.getElementById("Indicator");
 
-        SmallImg[0].onclick = function () {
-            ProductImg.src = SmallImg[0].src;
-        }
-        SmallImg[1].onclick = function () {
-            ProductImg.src = SmallImg[1].src;
-        }
-        SmallImg[2].onclick = function () {
-            ProductImg.src = SmallImg[2].src;
-        }
-        SmallImg[3].onclick = function () {
-            ProductImg.src = SmallImg[3].src;
-        }
+    function register() {
+        RegForm.style.transform = "translatex(0px)";
+        LoginForm.style.transform = "translatex(0px)";
+        Indicator.style.transform = "translateX(100px)";
+    }
 
-    </script>
+    function login() {
+        RegForm.style.transform = "translatex(300px)";
+        LoginForm.style.transform = "translatex(300px)";
+        Indicator.style.transform = "translateX(0px)";
+    }
+
+    // Detect URL parameter and toggle form accordingly
+    window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const formType = urlParams.get('form');
+        if (formType === 'register') {
+            register();
+        } else {
+            login(); // default
+        }
+    };
+</script>
+
 
 {% endblock %}
