@@ -51,6 +51,7 @@ def home_page(request):
     return render(request, 'home.html')
 
 def reset_password(request):
+    error_message = None
     if request.method == 'POST':
         username =  request.POST.get('username')
         email =  request.POST.get('email')
@@ -58,11 +59,13 @@ def reset_password(request):
            user_obj = User.objects.get(username = username, email = email)
            user_id = user_obj.id
            return redirect('confirm_password',user_id)
-        except Exception as error:
-           print(error)   
-    return render(request, 'reset_password.html')
+        except:
+            error_message = 'username or email is not valid.'
+              
+    return render(request, 'reset_password.html', {'error_message':error_message})
 
 def confirm_password(request, user_id):
+    error_message = None
     user = User.objects.get(pk = user_id)
     print(user.username)
     if request.method == 'POST':
@@ -72,4 +75,6 @@ def confirm_password(request, user_id):
             user.set_password(confirm_password)
             user.save()
             return redirect('login')
-    return render(request, 'confirm_password.html')
+        else:
+            error_message = 'passwords do not match'
+    return render(request, 'confirm_password.html', {'error_message':error_message})
