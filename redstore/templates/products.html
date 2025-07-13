@@ -16,7 +16,7 @@
                 <option>Sort By Sale</option>
             </select>
         </div>
-        
+
         <div class="row">
             {% for product in products %}
             <div class="col-4">
@@ -34,10 +34,13 @@
             {% endfor %}
         </div>
         <div class="page-btn">
-            {% for page in pages %}
+        {% for page in pages %}
             <a href="?page={{ page }}"><span>{{ page }}</span></a>
-            {% endfor %}
-            <span>&#8594;</span>
+        {% endfor %}
+    
+        {% if products.has_next %}
+            <a href="?page=next_page&current={{ current_page }}"><span>&#8594;</span></a>
+        {% endif %}
         </div>
     </div>
 
