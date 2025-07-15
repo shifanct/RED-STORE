@@ -6,7 +6,14 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required(login_url='/login')
 def product_list(request):
-    all_products = Products.objects.all()
+    all_category = Category.objects.values_list('name',flat=True)
+    if request.GET.get('category'):
+        category = request.GET.get('category')
+        print(category)
+        category_obj = Category.objects.get(name = category)
+        all_products = category_obj.category_products.all()
+    else:    
+        all_products = Products.objects.all()
     paginator = Paginator(all_products, 8)
 
     page_param = request.GET.get('page')
@@ -31,6 +38,7 @@ def product_list(request):
     pages_list = list(range(1, num_of_pages + 1))
 
     return render(request, 'products.html', {
+        'available_category': all_category,
         'products': page_products,
         'pages': pages_list,
         'current_page': page_products.number

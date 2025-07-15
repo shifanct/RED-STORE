@@ -3,61 +3,98 @@
 
 {% block content %}
 
-    <!-- All Products -->
+<!-- Internal CSS for the hamburger icon -->
+<style>
+  .menu-icon {
+    font-size: 28px;
+    color: red;
+    cursor: pointer;
+    padding: 10px;
+    display: inline-block;
+  }
 
-    <div class="small-container">
-        <div class="row row-2">
-            <h2>All Products</h2>
-            <select>
-                <option>Default Sort</option>
-                <option>Sort By Price</option>
-                <option>Sort By Popularity</option>
-                <option>Sort By Rating</option>
-                <option>Sort By Sale</option>
-            </select>
-        </div>
+  .navbar {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+  }
+</style>
 
-        <div class="row">
-            {% for product in products %}
-            <div class="col-4">
-                <a href="{% url 'detailed_view' product.id %}"><img src="{{ product.image.url }}"></a>
-                <h4>{{ product.product | truncatechars:40 }}</h4>
-                <div class="rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                </div>
-                <p>${{ product.price }}</p>
+<!-- Navbar with hamburger icon -->
+<div class="navbar">
+  <span class="menu-icon" onclick="myFunction()">☰</span>
+</div>
+
+<div id="categories">
+    {% for category in available_category %}
+    <a href="{% url 'product_list' %}?category={{ category  }}">{{ category }}</a><br>
+    {% endfor %}
+</div>
+
+<script>
+    function myFunction(){
+        if (document.getElementById('categories').style.display == 'none')
+        {
+            document.getElementById('categories').style.display = 'block';
+        }
+        else{
+             document.getElementById('categories').style.display = 'none';
+        }
+    }
+</script>
+
+<div class="small-container">
+    <div class="row row-2">
+        <h2>All Products</h2>
+        <select>
+            <option>Default Sort</option>
+            <option>Sort By Price</option>
+            <option>Sort By Popularity</option>
+            <option>Sort By Rating</option>
+            <option>Sort By Sale</option>
+        </select>
+    </div>
+
+    <div class="row">
+        {% for product in products %}
+        <div class="col-4">
+            <a href="{% url 'detailed_view' product.id %}"><img src="{{ product.image.url }}"></a>
+            <h4>{{ product.product | truncatechars:40 }}</h4>
+            <div class="rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
             </div>
-            {% endfor %}
+            <p>${{ product.price }}</p>
         </div>
-        <div class="page-btn">
+        {% endfor %}
+    </div>
+
+    <div class="page-btn">
         {% for page in pages %}
             <a href="?page={{ page }}"><span>{{ page }}</span></a>
         {% endfor %}
-    
+
         {% if products.has_next %}
             <a href="?page=next_page&current={{ current_page }}"><span>&#8594;</span></a>
         {% endif %}
-        </div>
     </div>
+</div>
 
-
-    <!-- javascript -->
-
-    <script>
-        var MenuItems = document.getElementById("MenuItems");
-        MenuItems.style.maxHeight = "0px";
-        function menutoggle() {
-            if (MenuItems.style.maxHeight == "0px") {
-                MenuItems.style.maxHeight = "200px"
-            }
-            else {
-                MenuItems.style.maxHeight = "0px"
-            }
+<!-- javascript -->
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+    function menutoggle() {
+        if (MenuItems.style.maxHeight == "0px") {
+            MenuItems.style.maxHeight = "200px"
         }
-    </script>
+        else {
+            MenuItems.style.maxHeight = "0px"
+        }
+    }
+</script>
 
 {% endblock %}
