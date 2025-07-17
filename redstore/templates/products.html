@@ -18,6 +18,7 @@
     align-items: center;
     padding-left: 10px;
   }
+
 </style>
 
 <!-- Navbar with hamburger icon -->
@@ -25,7 +26,7 @@
   <span class="menu-icon" onclick="myFunction()">☰</span>
 </div>
 
-<div id="categories">
+<div id="categories" style="display: none;">
     {% for category in available_category %}
     <a href="{% url 'product_list' %}?category={{ category  }}">{{ category }}</a><br>
     {% endfor %}
@@ -45,7 +46,13 @@
 
 <div class="small-container">
     <div class="row row-2">
+        
+        {% if choosed_category %}
+        <h2>All Products in {{ choosed_category }}</h2>
+        {% else %}
         <h2>All Products</h2>
+        {% endif %}
+
         <select>
             <option>Default Sort</option>
             <option>Sort By Price</option>

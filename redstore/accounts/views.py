@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from products.models import Products
 
 # Create your views here.
 
@@ -48,7 +49,8 @@ def logout(request):
 
 @login_required(login_url='/login')
 def home_page(request):
-    return render(request, 'home.html')
+    Latest_products = Products.objects.order_by('-updated_at')[:8]
+    return render(request, 'home.html',{'latest_products':Latest_products})
 
 def reset_password(request):
     error_message = None

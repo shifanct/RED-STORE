@@ -6,10 +6,10 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required(login_url='/login')
 def product_list(request):
+    category = None
     all_category = Category.objects.values_list('name',flat=True)
     if request.GET.get('category'):
         category = request.GET.get('category')
-        print(category)
         category_obj = Category.objects.get(name = category)
         all_products = category_obj.category_products.all()
     else:    
@@ -39,6 +39,7 @@ def product_list(request):
 
     return render(request, 'products.html', {
         'available_category': all_category,
+        'choosed_category':category,
         'products': page_products,
         'pages': pages_list,
         'current_page': page_products.number
