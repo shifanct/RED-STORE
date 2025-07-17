@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<!-- Internal CSS for the hamburger icon -->
+<!-- Internal CSS for the hamburger icon and search -->
 <style>
   .menu-icon {
     font-size: 28px;
@@ -17,6 +17,29 @@
     display: flex;
     align-items: center;
     padding-left: 10px;
+    justify-content: space-between;
+  }
+
+  .form {
+    padding-right: 20px;
+  }
+
+  .search {
+    width: 250px;
+    padding: 8px 15px;
+    border: 1px solid #ff523b;
+    border-radius: 30px;
+    background-color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 0 8px rgba(255, 82, 59, 0.1);
+    outline: none;
+    transition: 0.3s ease-in-out;
+  }
+
+  .search:focus {
+    box-shadow: 0 0 12px rgba(255, 82, 59, 0.3);
   }
 
 </style>
@@ -24,84 +47,83 @@
 <!-- Navbar with hamburger icon -->
 <div class="navbar">
   <span class="menu-icon" onclick="myFunction()">☰</span>
+  <form class="form" method="post" action="{% url 'product_list' %}">
+    {% csrf_token %}
+    <input name="search" type="text" placeholder="Search..." class="search">
+    <button><img src="{% static 'images/search-interface-symbol.png' %}" style="width: 20px;"></button>
+  </form>
 </div>
 
 <div id="categories" style="display: none;">
-    {% for category in available_category %}
-    <a href="{% url 'product_list' %}?category={{ category  }}">{{ category }}</a><br>
-    {% endfor %}
+  {% for category in available_category %}
+  <a href="{% url 'product_list' %}?category={{ category }}">{{ category }}</a><br>
+  {% endfor %}
 </div>
 
 <script>
-    function myFunction(){
-        if (document.getElementById('categories').style.display == 'none')
-        {
-            document.getElementById('categories').style.display = 'block';
-        }
-        else{
-             document.getElementById('categories').style.display = 'none';
-        }
-    }
+  function myFunction() {
+    const categories = document.getElementById('categories');
+    categories.style.display = categories.style.display === 'none' ? 'block' : 'none';
+  }
 </script>
 
 <div class="small-container">
-    <div class="row row-2">
-        
-        {% if choosed_category %}
-        <h2>All Products in {{ choosed_category }}</h2>
-        {% else %}
-        <h2>All Products</h2>
-        {% endif %}
+  <div class="row row-2">
 
-        <select>
-            <option>Default Sort</option>
-            <option>Sort By Price</option>
-            <option>Sort By Popularity</option>
-            <option>Sort By Rating</option>
-            <option>Sort By Sale</option>
-        </select>
+    {% if choosed_category %}
+    <h2>All Products in {{ choosed_category }}</h2>
+    {% else %}
+    <h2>All Products</h2>
+    {% endif %}
+
+    <select>
+      <option>Default Sort</option>
+      <option>Sort By Price</option>
+      <option>Sort By Popularity</option>
+      <option>Sort By Rating</option>
+      <option>Sort By Sale</option>
+    </select>
+  </div>
+
+  <div class="row">
+    {% for product in products %}
+    <div class="col-4">
+      <a href="{% url 'detailed_view' product.id %}"><img src="{{ product.image.url }}"></a>
+      <h4>{{ product.product | truncatechars:40 }}</h4>
+      <div class="rating">
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star-o"></i>
+      </div>
+      <p>${{ product.price }}</p>
     </div>
+    {% endfor %}
+  </div>
 
-    <div class="row">
-        {% for product in products %}
-        <div class="col-4">
-            <a href="{% url 'detailed_view' product.id %}"><img src="{{ product.image.url }}"></a>
-            <h4>{{ product.product | truncatechars:40 }}</h4>
-            <div class="rating">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-            <p>${{ product.price }}</p>
-        </div>
-        {% endfor %}
-    </div>
+  <div class="page-btn">
+    {% for page in pages %}
+    <a href="?page={{ page }}"><span>{{ page }}</span></a>
+    {% endfor %}
 
-    <div class="page-btn">
-        {% for page in pages %}
-            <a href="?page={{ page }}"><span>{{ page }}</span></a>
-        {% endfor %}
-
-        {% if products.has_next %}
-            <a href="?page=next_page&current={{ current_page }}"><span>&#8594;</span></a>
-        {% endif %}
-    </div>
+    {% if products.has_next %}
+    <a href="?page=next_page&current={{ current_page }}"><span>&#8594;</span></a>
+    {% endif %}
+  </div>
 </div>
 
 <!-- javascript -->
 <script>
-    var MenuItems = document.getElementById("MenuItems");
-    MenuItems.style.maxHeight = "0px";
-    function menutoggle() {
-        if (MenuItems.style.maxHeight == "0px") {
-            MenuItems.style.maxHeight = "200px"
-        }
-        else {
-            MenuItems.style.maxHeight = "0px"
-        }
+  var MenuItems = document.getElementById("MenuItems");
+  MenuItems.style.maxHeight = "0px";
+  function menutoggle() {
+    if (MenuItems.style.maxHeight == "0px") {
+      MenuItems.style.maxHeight = "200px"
+    } else {
+      MenuItems.style.maxHeight = "0px"
     }
+  }
 </script>
 
 {% endblock %}

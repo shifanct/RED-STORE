@@ -12,6 +12,9 @@ def product_list(request):
         category = request.GET.get('category')
         category_obj = Category.objects.get(name = category)
         all_products = category_obj.category_products.all()
+    elif request.POST.get('search'):
+        search_element = request.POST.get('search')  
+        all_products = Products.objects.filter(product__istartswith = search_element)
     else:    
         all_products = Products.objects.all()
     paginator = Paginator(all_products, 8)
